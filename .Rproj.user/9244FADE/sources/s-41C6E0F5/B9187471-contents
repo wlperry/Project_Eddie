@@ -2,6 +2,7 @@
 title: "Temp and CO2 Global Change"
 author: "Bill Perry"
 date: "6/10/2019"
+
 knit: (function(input_file, encoding) {
   out_dir <- 'docs';
   rmarkdown::render(input_file,
