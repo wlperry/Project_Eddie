@@ -2,7 +2,7 @@
 ### Bill Perry   
 ### 2019 - 06 - 10
 <br>    
-This is an example test repository for the Prject Eddie Global Temperature change modulue.
+This is an example test repository for the Pr0ject Eddie Global Temperature change modulue.
    
 #### The example webpage could be:
 https://wlperry.github.io/Project_Eddie
