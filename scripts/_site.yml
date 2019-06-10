@@ -1,0 +1,10 @@
+name: "Project Eddie Global Change"
+output_dir: "documents"
+navbar:
+  title: "Project Eddie Global Change"
+  left:
+  - text: "Home"
+   href: index.html
+output:
+  html_document:
+ theme: cosmo
