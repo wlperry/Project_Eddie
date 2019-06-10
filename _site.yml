@@ -1,0 +1,8 @@
+name: "Project-Eddie-Global-Change"
+navbar:
+  title: "Project Eddie"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Temp and CO2 Global Change"
+      href: temp_co2_global_change.html       

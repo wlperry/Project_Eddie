@@ -2,8 +2,12 @@
 title: "Project Eddie Temperature and CO2 Global Change"
 author: "Bill Perry"
 date: "6/10/2019"
+output: html_document
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 # Project Eddie Example Module for Global Change   
 ### Bill Perry   
