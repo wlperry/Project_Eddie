@@ -5,14 +5,14 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2880045419",
+    "hash" : "1006347554",
     "id" : "B9187471",
-    "lastKnownWriteTime" : 1560202222,
-    "last_content_update" : 1560202222451,
+    "lastKnownWriteTime" : 1560202433,
+    "last_content_update" : 1560202433040,
     "path" : "~/Documents/R Projects/Project_Eddie/temp_co2_global_change.Rmd",
     "project_path" : "temp_co2_global_change.Rmd",
     "properties" : {
-        "cursorPosition" : "4,0",
+        "cursorPosition" : "9,76",
         "scrollLine" : "0",
         "tempName" : "Untitled1"
     },
