@@ -1,15 +1,11 @@
----
-title: "Project Eddie Temperature and CO2 Global Change"
-author: "Bill Perry"
-date: "6/10/2019"
----
-
-
 # Project Eddie Example Module for Global Change   
 ### Bill Perry   
 ### 2019 - 06 - 10
 <br>    
 This is an example test repository for the Prject Eddie Global Temperature change modulue.
+   
+#### The example webpage could be:
+https://wlperry.github.io/Project_Eddie
 
 The datafor this module come from several sources cited below and a link to the cleaned data are provided here as well.   
        
