@@ -77,18 +77,18 @@ modern_co2.df <- read_delim("data/co2_annmean_mlo.txt", delim = " ",
                      skip_empty_rows = TRUE, 
                      comment = "#",
                      col_names = FALSE) %>%
-  rename(year= X1, co2 = X2, uncertainty = X3 ) %>%
-  mutate(year = as.numeric(year), co2 = as.numeric(co2))
+  rename(year= X1, co2_ppm = X2, uncertainty = X3 ) %>%
+  mutate(year = as.numeric(year), co2_ppm = as.numeric(co2_ppm))
 
 # plot current co2-----
-modern_co2.plot <- modern_co2.df %>% ggplot(aes(x=year, y = co2)) + 
+modern_co2.plot <- modern_co2.df %>% ggplot(aes(x=year, y = co2_ppm)) + 
   geom_point() + 
   geom_smooth(method="lm")
 modern_co2.plot
 ggplotly(modern_co2.plot)
 
 # current co2 linear model ---- 
-modern_co2.model = lm(co2~year, data=modern_co2.df)
+modern_co2.model = lm(co2_ppm~year, data=modern_co2.df)
 summary(modern_co2.model)
 
 # save cleaned modern co2 data 
