@@ -5,7 +5,7 @@
 This is an example test repository for the Pr0ject Eddie Global Temperature change modulue.
    
 #### The example webpage could be:
-https://wlperry.github.io/Project_Eddie
+https://wlperry.github.io/Project_Eddie/index.html
 
 The datafor this module come from several sources cited below and a link to the cleaned data are provided here as well.   
        
