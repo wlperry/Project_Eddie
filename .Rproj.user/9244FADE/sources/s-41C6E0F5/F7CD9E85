@@ -5,14 +5,14 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "2466397062",
     "id" : "F7CD9E85",
-    "lastKnownWriteTime" : 1560202335,
-    "last_content_update" : 1560202335606,
+    "lastKnownWriteTime" : 1560202708,
+    "last_content_update" : 1560202708560,
     "path" : "~/Documents/R Projects/Project_Eddie/index.Rmd",
     "project_path" : "index.Rmd",
     "properties" : {
-        "cursorPosition" : "7,3",
+        "cursorPosition" : "11,0",
         "scrollLine" : "0",
         "tempName" : "Untitled1"
     },
