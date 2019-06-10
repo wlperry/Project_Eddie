@@ -1,8 +1,24 @@
+#' ---
+#' title: "Project Eddie Temperature and CO2 Project"
+#' author: "biobill"
+#' date: "2019-06-10"
+#' always_allow_html: yes
+#' output:
+#'    word_document:
+#'      toc: false
+#'      highlight: haddock
+#' ---
+#' 
+
+setwd("~/Documents/R Projects/Project_Eddie")
+# setwd(gsub(pattern = '/scripts', replacement = '', x = getwd()))
+
 # install packages ----
 # install.packages("readxl")
 # install.packages("tidyverse")
 # install.packages("lubridate")
 # install.packages("scales")
+# devtools::install_github("thomasp85/patchwork")
 
 # load libraries ----
 library(tidyverse)
@@ -11,40 +27,53 @@ library(lubridate)
 library(scales)
 library(janitor)
 library(plotly)
-
-setwd("~/Documents/R Projects/Project_Eddie")
+library(patchwork)
 
 # read in file and make year numeric ----
-avg_temp.df <- read_excel("data/book_tgt_climate_9.xlsx", sheet="Temp (C)") %>%
+modern_temp.df <- read_excel("./data/book_tgt_climate_9.xlsx", 
+                          skip = 3,
+                          sheet="Temp (C)") 
+
+modern_temp.df <- modern_temp.df %>%
   clean_names() %>%
-  mutate(year = as.numeric(year))
+  rename(temp_c = temperature) 
+
+write_csv(modern_temp.df, "finalized_data/modern_temp.csv")
+
+# read excel file from link - harder -----
+# url <- "http://www.earth-policy.org/datacenter/xls/book_tgt_climate_9.xlsx"
+# destfile <- "book_tgt_climate_9.xlsx"
+# curl::curl_download(url, destfile)
+# avg_temp.df <- read_excel(destfile, skip = 2)
+
 
 # plot the new temp data -----
-current_temp.plot <- avg_temp.df %>%
-  ggplot(aes(year, temperature)) + 
+modern_temp.plot <- modern_temp.df %>%
+  ggplot(aes(year, temp_c)) + 
   geom_point() +
   geom_line()
-ggplotly(current_temp.plot)
+modern_temp.plot
+ggplotly(modern_temp.plot)
 
 # filter out new data that isolates the max -----
-max_temp <- avg_temp.df %>%
-  filter(year >1964)
+max_modern_temp.df  <- modern_temp.df %>%
+  filter(year > 1964)
 
 # current temp max linear plot -----
-max_current_temp.plot <- max_temp %>%
-  ggplot(aes(year, temperature)) + 
+max_modern_temp.plot <- max_modern_temp.df %>%
+  ggplot(aes(year, temp_c)) + 
   geom_point() +
   geom_line() + 
   geom_smooth(method = "lm")
-ggplotly(max_current_temp.plot)
+max_modern_temp.plot
+ggplotly(max_modern_temp.plot)
 
 # linear model current temp ----
-current_temp.model <- lm(temperature ~ year, data = max_temp)
-summary(current_temp.model)
+modern_temp_inc.model <- lm(temp_c ~ year, data = max_modern_temp.df)
+summary(modern_temp_inc.model)
 
-
-# read in current co2----
-co2.df <- read_delim("./data/co2_annmean_mlo.txt", delim = " ",
+# read in current co2---
+modern_co2.df <- read_delim("data/co2_annmean_mlo.txt", delim = " ",
                      skip_empty_rows = TRUE, 
                      comment = "#",
                      col_names = FALSE) %>%
@@ -52,51 +81,91 @@ co2.df <- read_delim("./data/co2_annmean_mlo.txt", delim = " ",
   mutate(year = as.numeric(year), co2 = as.numeric(co2))
 
 # plot current co2-----
-co2.df %>% ggplot(aes(x=year, y = co2)) + 
+modern_co2.plot <- modern_co2.df %>% ggplot(aes(x=year, y = co2)) + 
   geom_point() + 
   geom_smooth(method="lm")
-
+modern_co2.plot
+ggplotly(modern_co2.plot)
 
 # current co2 linear model ---- 
-co2_model = lm(co2~year, data=co2.df)
-summary(co2_model)
+modern_co2.model = lm(co2~year, data=modern_co2.df)
+summary(modern_co2.model)
+
+# save cleaned modern co2 data 
+write_csv(modern_co2.df, "finalized_data/modern_co2.csv")
 
 # ice core data ----
-ice_core.df <- read_excel("./data/Vostok Ice Core Data 2018.xls")
+ancient_temp_co2.df <- read_excel("data/Vostok Ice Core Data 2018.xls") 
+
+# clean data
+ancient_temp_co2.df <-ancient_temp_co2.df %>%
+  rename(years_1000 = age)
 
 # plot ice core temp ----
-ice <- ice_core.df %>% ggplot(aes(age, temp_c)) +
+anc_temp.plot <- ancient_temp_co2.df %>% 
+  ggplot(aes(years_1000, temp_c)) +
   geom_point() + 
   geom_line() + 
   scale_x_reverse()
-ggplotly(ice)
-
+ggplotly(anc_temp.plot)
+anc_temp.plot
 
 # isolate max rate temp ----
-old_max.df <- ice_core.df %>%
-  filter(age > 9.7 & age < 16.02)
+anc_max_temp.df <- ancient_temp_co2.df %>%
+  filter(years_1000 > 9.7 & years_1000 < 16.02)
 
-
-# model max temp linear ----
-old_temp.model <- lm(temp_c ~ age, data=old_max.df)
-summary(old_temp.model)
-
-# co2 plot ----
-co2.plot <- ice_core.df %>% ggplot(aes(age, co2_ppm)) +
+anc_temp_max.plot <- anc_max_temp.df %>% 
+  ggplot(aes(years_1000, temp_c)) +
   geom_point() + 
   geom_line() + 
   scale_x_reverse()
-ggplotly(co2.plot)
+ggplotly(anc_temp_max.plot)
+anc_temp_max.plot
+
+# model max temp linear ----
+anc_max_temp.model <- lm(temp_c ~ years_1000, data=anc_max_temp.df)
+summary(anc_max_temp.model)
+
+# co2 plot ----
+anc_co2.plot <- ancient_temp_co2.df %>% 
+  ggplot(aes(years_1000, co2_ppm)) +
+  geom_point() + 
+  geom_line() + 
+  scale_x_reverse()
+ggplotly(anc_co2.plot)
+anc_co2.plot
 
 # extract max co2  data ----
-old_co2_max.df <- ice_core.df %>%
-  filter(age > 11.7 & age < 20.65)
+anc_co2_max.df <- ancient_temp_co2.df %>%
+  filter(years_1000 > 11.7 & years_1000 < 20.65)
+
+# co2 anc max plot ----
+anc_co2_max.plot <- anc_co2_max.df %>% 
+  ggplot(aes(years_1000, co2_ppm)) +
+  geom_point() + 
+  geom_line() + 
+  scale_x_reverse()
+ggplotly(anc_co2_max.plot)
+anc_co2_max.plot
+
 
 # old co2 model
-old_co2.model <- lm(co2_ppm ~ age, data=old_co2_max.df)
-summary(old_co2.model)
+anc_co2_max.model <- lm(co2_ppm ~ years_1000, data=anc_co2_max.df)
+summary(anc_co2_max.model)
 
-# save cleaned data example
-write_csv(avg_temp.df, "./finalized data/avg_temp.csv")
-# 
+# save cleaned ancient data 
+write_csv(ancient_temp_co2.df, "finalized_data/ancient_temp_co2.csv")
+ 
 # test.df <- read_csv("https://raw.githubusercontent.com/wlperry/Project_Eddie/master/finalized_data/avg_temp.csv")
+
+
+all.plots <- modern_temp.plot + 
+  max_modern_temp.plot +
+  modern_co2.plot + 
+  anc_temp.plot +
+  anc_temp_max.plot +
+  anc_co2.plot + 
+  anc_co2_max.plot
+all.plots
+  
+  
